@@ -1,0 +1,20 @@
+meta {
+  name: tomar
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/revision-manual/tomar-evento
+  body: json
+  auth: inherit
+}
+
+body:json {
+  { "eventoId": 1 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

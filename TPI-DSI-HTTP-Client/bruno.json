@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "TPI-DSI-HTTP-Client",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
