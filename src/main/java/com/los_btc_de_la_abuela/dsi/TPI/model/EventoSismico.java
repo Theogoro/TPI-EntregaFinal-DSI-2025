@@ -49,13 +49,12 @@ public class EventoSismico {
     @Transient
     private EstadoEvSismico estadoEvSismico;
 
-    // /**
-    // TODO: REVISAR SI NECESITAMOS ESTO
-    //  * Magnitud en escala Richter del evento
-    //  */
-    // @ManyToOne
-    // @JoinColumn(name = "magnitud_richter_id")
-    // private MagnitudRichter magnitudRichter;
+    /**
+     * Magnitud en escala Richter del evento
+     */
+    @ManyToOne
+    @JoinColumn(name = "magnitud_richter_id")
+    private MagnitudRichter magnitudRichter;
 
     /**
      * Clasificación del evento sísmico
@@ -131,7 +130,8 @@ public class EventoSismico {
       return new DatosRegistradosDTO(
         this.clasificacionSismo.getClasificacion(),
         this.origenGeneracion.getOrigen(),
-        this.alcanceSismo.getAlcance()
+        this.alcanceSismo.getAlcance(),
+        this.magnitudRichter.getDescripcion()
       );
     }
 

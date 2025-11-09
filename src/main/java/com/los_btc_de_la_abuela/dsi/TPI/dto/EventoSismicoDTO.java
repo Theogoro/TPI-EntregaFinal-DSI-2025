@@ -19,6 +19,8 @@ public record EventoSismicoDTO(
     String origen,
     String alcance,
     Double radioAlcanceKm,
+    String magnitudRichterDescripcion,
+    Double magnitudRichterValor,
     LocalDateTime fechaUltimoCambioEstado
 ) {
     
@@ -33,7 +35,7 @@ public record EventoSismicoDTO(
         EstadoEnum estadoActual
     ) {
         this(id, fechaHoraOcurrencia, coordenadas, valorMagnitud, estadoActual,
-             null, null, null, null, null, null);
+             null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -91,6 +93,8 @@ public record EventoSismicoDTO(
             evento.getOrigenGeneracion() != null ? evento.getOrigenGeneracion().getOrigen() : null,
             evento.getAlcanceSismo() != null ? evento.getAlcanceSismo().getAlcance() : null,
             evento.getAlcanceSismo() != null ? evento.getAlcanceSismo().getRadioKm() : null,
+            evento.getMagnitudRichter() != null ? evento.getMagnitudRichter().getDescripcion() : null,
+            evento.getMagnitudRichter() != null ? evento.getMagnitudRichter().getMagnitud() : null,
             fechaUltimoCambio
         );
     }

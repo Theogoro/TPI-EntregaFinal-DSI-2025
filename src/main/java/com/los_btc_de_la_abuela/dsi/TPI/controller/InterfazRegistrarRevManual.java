@@ -23,7 +23,7 @@ public class InterfazRegistrarRevManual {
     @Autowired
     private GestorRegRevisionManual gestorRevision;
 
-    @GetMapping("/eventos-sin-revision")
+    @GetMapping("/sin-revision")
     public ResponseEntity<List<EventoSismicoSinRevisionDTO>> buscarEventosSinRevision() {
         List<EventoSismicoSinRevisionDTO> eventos = gestorRevision.buscarEventosSinRevision();
         return ResponseEntity.ok(eventos);

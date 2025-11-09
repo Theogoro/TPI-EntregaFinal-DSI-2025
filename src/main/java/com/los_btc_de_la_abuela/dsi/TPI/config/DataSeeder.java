@@ -408,6 +408,9 @@ public class DataSeeder implements CommandLineRunner {
         ClasificacionSismo clasificacion = clasificacionRepository.findAll().stream().findFirst().orElse(null);
         OrigenDeGeneracion origen = origenRepository.findAll().stream().findFirst().orElse(null);
         AlcanceSismo alcance = alcanceRepository.findAll().stream().findFirst().orElse(null);
+        
+        // Obtener magnitudes Richter del catálogo
+        List<MagnitudRichter> magnitudes = magnitudRepository.findAll();
 
         // Evento 1: Pendiente de Revisión (con serie temporal de Mendoza)
         EventoSismico evento1 = new EventoSismico();
@@ -418,6 +421,10 @@ public class DataSeeder implements CommandLineRunner {
         evento1.setClasificacionSismo(clasificacion);
         evento1.setOrigenGeneracion(origen);
         evento1.setAlcanceSismo(alcance);
+        // Asociar magnitud Richter "Moderado" (5.5)
+        evento1.setMagnitudRichter(magnitudes.stream()
+            .filter(m -> m.getMagnitud() == 5.5)
+            .findFirst().orElse(null));
         evento1 = eventoRepository.save(evento1);
 
         // Asociar serie temporal al evento
@@ -446,6 +453,10 @@ public class DataSeeder implements CommandLineRunner {
         evento2.setClasificacionSismo(clasificacion);
         evento2.setOrigenGeneracion(origen);
         evento2.setAlcanceSismo(alcance);
+        // Asociar magnitud Richter "Ligero" (4.5)
+        evento2.setMagnitudRichter(magnitudes.stream()
+            .filter(m -> m.getMagnitud() == 4.5)
+            .findFirst().orElse(null));
         evento2 = eventoRepository.save(evento2);
 
         // Asociar serie temporal al evento
@@ -474,6 +485,10 @@ public class DataSeeder implements CommandLineRunner {
         evento3.setClasificacionSismo(clasificacion);
         evento3.setOrigenGeneracion(origen);
         evento3.setAlcanceSismo(alcance);
+        // Asociar magnitud Richter "Menor" (3.0)
+        evento3.setMagnitudRichter(magnitudes.stream()
+            .filter(m -> m.getMagnitud() == 3.0)
+            .findFirst().orElse(null));
         evento3 = eventoRepository.save(evento3);
 
         CambioEstado cambio3 = new CambioEstado(
@@ -493,6 +508,10 @@ public class DataSeeder implements CommandLineRunner {
         evento4.setClasificacionSismo(clasificacion);
         evento4.setOrigenGeneracion(origen);
         evento4.setAlcanceSismo(alcance);
+        // Asociar magnitud Richter "Fuerte" (6.5)
+        evento4.setMagnitudRichter(magnitudes.stream()
+            .filter(m -> m.getMagnitud() == 6.5)
+            .findFirst().orElse(null));
         evento4 = eventoRepository.save(evento4);
 
         // Primer cambio: PTE_DE_REVISION (ya cerrado)
@@ -523,6 +542,10 @@ public class DataSeeder implements CommandLineRunner {
         evento5.setClasificacionSismo(clasificacion);
         evento5.setOrigenGeneracion(origen);
         evento5.setAlcanceSismo(alcance);
+        // Asociar magnitud Richter "Ligero" (4.5)
+        evento5.setMagnitudRichter(magnitudes.stream()
+            .filter(m -> m.getMagnitud() == 4.5)
+            .findFirst().orElse(null));
         evento5 = eventoRepository.save(evento5);
 
         CambioEstado cambio5 = new CambioEstado(
@@ -537,6 +560,7 @@ public class DataSeeder implements CommandLineRunner {
         System.out.println("   ✓ 3 eventos en estado PTE_DE_REVISION");
         System.out.println("   ✓ 1 evento AUTO_DETECTADO");
         System.out.println("   ✓ 1 evento CONFIRMADO");
+        System.out.println("   ✓ Todos con magnitudes Richter asociadas");
         System.out.println("   ✓ Todos con estaciones sismológicas asociadas");
     }
 }
