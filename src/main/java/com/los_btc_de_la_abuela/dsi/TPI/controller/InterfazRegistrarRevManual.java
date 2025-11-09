@@ -6,6 +6,7 @@ import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoSinRevisionDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.SismogramaDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.service.GestorRegRevisionManual;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/eventos")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000", "http://localhost:4200"})
 public class InterfazRegistrarRevManual {
 
     @Autowired
@@ -25,8 +27,22 @@ public class InterfazRegistrarRevManual {
 
     @GetMapping("/sin-revision")
     public ResponseEntity<List<EventoSismicoSinRevisionDTO>> buscarEventosSinRevision() {
-        List<EventoSismicoSinRevisionDTO> eventos = gestorRevision.buscarEventosSinRevision();
-        return ResponseEntity.ok(eventos);
+        try {
+            List<EventoSismicoSinRevisionDTO> eventos = gestorRevision.buscarEventosSinRevision();
+
+            if (eventos == null || eventos.isEmpty()) {
+                return ResponseEntity.status(204).build();
+            }
+            
+            return ResponseEntity.ok(eventos);
+            
+        } catch (Exception e) {
+            if (e instanceof NotFoundException) {
+                return ResponseEntity.status(204).build();
+            } else {
+                return ResponseEntity.status(500).build();
+            }
+        }
     }
 
     @PostMapping("/tomar-evento")
