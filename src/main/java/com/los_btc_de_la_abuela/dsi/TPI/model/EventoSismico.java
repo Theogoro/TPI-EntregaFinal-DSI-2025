@@ -1,7 +1,6 @@
 package com.los_btc_de_la_abuela.dsi.TPI.model;
 
 import com.los_btc_de_la_abuela.dsi.TPI.dto.DatosRegistradosDTO;
-import com.los_btc_de_la_abuela.dsi.TPI.dto.DatosSismografoDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.enums.EstadoEnum;
 import com.los_btc_de_la_abuela.dsi.TPI.model.estado.EstadoEvSismico;
 import jakarta.persistence.*;
@@ -105,11 +104,11 @@ public class EventoSismico {
     /**
      * Bloquea el evento sísmico según las reglas del estado actual.
      */
-    public void bloquear() {
+    public void bloquear(Usuario usuarioActual) {
         if (this.estadoEvSismico == null) {
             initEstadoEvSismico();
         }
-        this.estadoEvSismico.bloquear(this, this.cambiosEstado);
+        this.estadoEvSismico.bloquear(this, this.cambiosEstado, usuarioActual);
     }
 
     /**
@@ -129,18 +128,15 @@ public class EventoSismico {
     }
 
     public DatosRegistradosDTO obtenerDatosRegistrados() {
-      // Cada serie temporal ya devuelve un DatosSismografoDTO con su sismografo y velocidades
-      List<DatosSismografoDTO> datosSismografos = this.serieTemporal
-          .stream()
-          .map(serie -> serie.buscarVelocidadLongitudFrecuencia())
-          .toList();
-
       return new DatosRegistradosDTO(
         this.clasificacionSismo.getClasificacion(),
         this.origenGeneracion.getOrigen(),
-        this.alcanceSismo.getAlcance(),
-        datosSismografos
+        this.alcanceSismo.getAlcance()
       );
+    }
+
+    public void rechazar(Usuario usuarioActual) {
+        this.estadoEvSismico.rechazar(this, this.cambiosEstado, usuarioActual);
     }
 
 

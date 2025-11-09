@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.los_btc_de_la_abuela.dsi.TPI.dto.DatosSismografoDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.VelocidadLongitudDeFrecuencia;
 
 /**
@@ -63,13 +63,13 @@ public class SerieTemporal {
     private EventoSismico eventoSismico;
 
 
-    public DatosSismografoDTO buscarVelocidadLongitudFrecuencia() {
+    public Map<SerieTemporal, List<VelocidadLongitudDeFrecuencia>> buscarVelocidadLongitudFrecuencia() {
       List<VelocidadLongitudDeFrecuencia> resultados = new ArrayList<>();
 
       for (MuestraSismica muestra : muestras) {
           resultados.addAll(muestra.buscarVelocidadLongitudFrecuencia());
       }
 
-      return new DatosSismografoDTO(this.sismografo.getId(), resultados);
+      return Map.of(this, resultados);
     }
 }

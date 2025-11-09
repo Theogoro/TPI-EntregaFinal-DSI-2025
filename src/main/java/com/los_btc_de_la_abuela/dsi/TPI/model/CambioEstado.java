@@ -39,6 +39,9 @@ public class CambioEstado {
     @JoinColumn(name = "evento_sismico_id", nullable = false)
     private EventoSismico eventoSismico;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario responsable;
 
 
     /**
@@ -46,9 +49,10 @@ public class CambioEstado {
      * @param estadoObj el objeto estado del patrón State
      * @param fechaInicio la fecha y hora de inicio del estado
      */
-    public CambioEstado(EstadoEvSismico estadoObj, LocalDateTime fechaInicio) {
+    public CambioEstado(EstadoEvSismico estadoObj, LocalDateTime fechaInicio, Usuario responsable) {
         this.estado = EstadoEvSismico.toEnum(estadoObj);
         this.fechaInicio = fechaInicio;
+        this.responsable = responsable;
     }
 
     /**
@@ -56,9 +60,10 @@ public class CambioEstado {
      * @param estado el enum del estado
      * @param fechaInicio la fecha y hora de inicio del estado
      */
-    public CambioEstado(EstadoEnum estado, LocalDateTime fechaInicio) {
+    public CambioEstado(EstadoEnum estado, LocalDateTime fechaInicio, Usuario responsable) {
         this.estado = estado;
         this.fechaInicio = fechaInicio;
+        this.responsable = responsable;
     }
 
     /**

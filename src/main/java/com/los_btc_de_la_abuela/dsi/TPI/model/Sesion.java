@@ -78,4 +78,8 @@ public class Sesion {
     public boolean estaActiva() {
         return activa && fechaHoraFin == null;
     }
+
+    public Usuario getEmpleado() {
+      return usuario;
+    }
 }

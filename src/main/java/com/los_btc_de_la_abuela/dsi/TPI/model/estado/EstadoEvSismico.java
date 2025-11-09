@@ -3,6 +3,7 @@ package com.los_btc_de_la_abuela.dsi.TPI.model.estado;
 import com.los_btc_de_la_abuela.dsi.TPI.enums.EstadoEnum;
 import com.los_btc_de_la_abuela.dsi.TPI.model.CambioEstado;
 import com.los_btc_de_la_abuela.dsi.TPI.model.EventoSismico;
+import com.los_btc_de_la_abuela.dsi.TPI.model.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class EstadoEvSismico {
      * @param eventoSismico el evento a bloquear
      * @param cambioEstado el cambio de estado asociado
      */
-    public void bloquear(EventoSismico eventoSismico, List<CambioEstado> cambioEstado) {
+    public void bloquear(EventoSismico eventoSismico, List<CambioEstado> cambioEstado, Usuario usuarioActual) {
       throw new UnsupportedOperationException("Operación de bloqueo no soportada en estado: " + nombre);
     }
 
@@ -62,8 +63,11 @@ public abstract class EstadoEvSismico {
 
     /**
      * Rechaza el evento sísmico.
+     * @param cambiosEstado 
+     * @param eventoSismico 
+     * @param usuarioActual 
      */
-    public void rechazar() {
+    public void rechazar(EventoSismico eventoSismico, List<CambioEstado> cambiosEstado, Usuario usuarioActual) {
         throw new UnsupportedOperationException("Operación de rechazo no soportada en estado: " + nombre);
     }
 
@@ -108,8 +112,8 @@ public abstract class EstadoEvSismico {
      * @param inicio el estado de inicio
      * @return el cambio de estado creado
      */
-    public CambioEstado crearCambioEstado(LocalDateTime inicio, EstadoEvSismico estado) {
-        return new CambioEstado(estado, inicio);
+    public CambioEstado crearCambioEstado(LocalDateTime inicio, EstadoEvSismico estado, Usuario responsable) {
+         return new CambioEstado(estado, inicio, responsable);
     }
 
     /**

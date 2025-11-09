@@ -1,0 +1,24 @@
+meta {
+  name: get datos registrados
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/revision-manual/evento/:eventoId/datos-registrados
+  body: none
+  auth: inherit
+}
+
+params:path {
+  eventoId: 1
+}
+
+body:json {
+  { "eventoId": 5 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

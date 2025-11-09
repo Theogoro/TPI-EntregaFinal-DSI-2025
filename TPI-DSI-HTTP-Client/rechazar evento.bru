@@ -1,0 +1,24 @@
+meta {
+  name: rechazar evento
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/revision-manua/evento/:eventoId/rechazar
+  body: none
+  auth: inherit
+}
+
+params:path {
+  eventoId: 1
+}
+
+body:json {
+  { "eventoId": 5 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

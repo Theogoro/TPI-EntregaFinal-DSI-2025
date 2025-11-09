@@ -72,4 +72,8 @@ public class EstacionSismologica {
     public String getUbicacion() {
         return String.format("Lat: %.4f, Lon: %.4f", latitud, longitud);
     }
+
+    public String getEstacion() {
+      return this.nombre;
+    }
 }

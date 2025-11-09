@@ -3,6 +3,7 @@ package com.los_btc_de_la_abuela.dsi.TPI.model.estado;
 import com.los_btc_de_la_abuela.dsi.TPI.enums.EstadoEnum;
 import com.los_btc_de_la_abuela.dsi.TPI.model.CambioEstado;
 import com.los_btc_de_la_abuela.dsi.TPI.model.EventoSismico;
+import com.los_btc_de_la_abuela.dsi.TPI.model.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +19,7 @@ public class PteDeRevision extends EstadoEvSismico {
     }
 
     @Override
-    public void bloquear(EventoSismico eventoSismico, List<CambioEstado> cambiosEstado) {
+    public void bloquear(EventoSismico eventoSismico, List<CambioEstado> cambiosEstado, Usuario usuarioActual) {
         LocalDateTime ahora = this.getFechaHoraActual();
         
         // 1. Cerrar el cambio de estado actual
@@ -28,7 +29,7 @@ public class PteDeRevision extends EstadoEvSismico {
         
         // 2. Crear el nuevo cambio de estado "Bloqueado en Revisión"
         EstadoEvSismico estadoBloqueado = new BloqueadoEnRevision();
-        CambioEstado nuevoCambio = this.crearCambioEstado(ahora, estadoBloqueado);
+        CambioEstado nuevoCambio = this.crearCambioEstado(ahora, estadoBloqueado, usuarioActual);
         nuevoCambio.setEventoSismico(eventoSismico); // ESTO PARA LA DB
         
         // 3. Agregar el nuevo cambio a la lista

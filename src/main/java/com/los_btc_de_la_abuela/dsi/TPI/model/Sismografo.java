@@ -83,4 +83,12 @@ public class Sismografo {
      */
     @OneToMany(mappedBy = "sismografo", cascade = CascadeType.ALL)
     private List<SerieTemporal> seriesTemporales = new ArrayList<>();
+
+    public boolean sosDeSerieTemporal(SerieTemporal serieTemporal) {
+      return seriesTemporales.contains(serieTemporal);
+    }
+
+    public String buscarEstacionSismologica() {
+      return this.estacion.getEstacion();
+    }
 }

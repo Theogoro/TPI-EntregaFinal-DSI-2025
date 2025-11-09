@@ -1,0 +1,24 @@
+meta {
+  name: get sismogramas
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/revision-manual/evento/:eventoId/sismogramas
+  body: none
+  auth: inherit
+}
+
+params:path {
+  eventoId: 1
+}
+
+body:json {
+  { "eventoId": 5 }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
