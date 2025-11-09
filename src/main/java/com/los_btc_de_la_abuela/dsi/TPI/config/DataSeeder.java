@@ -319,7 +319,7 @@ public class DataSeeder implements CommandLineRunner {
         serie3.setFrecuenciaMuestreo(150.0);
         serie3.setSismografo(sismografo3);
         serie3 = serieTemporalRepository.save(serie3);
-        crearMuestrasConDetalles(serie3, 8, 150.0);
+        crearMuestrasConDetalles(serie3, 20, 150.0);
 
         // Estación 4: Catamarca
         EstacionSismologica estacion4 = new EstacionSismologica();
@@ -349,12 +349,12 @@ public class DataSeeder implements CommandLineRunner {
         serie4.setFrecuenciaMuestreo(180.0);
         serie4.setSismografo(sismografo4);
         serie4 = serieTemporalRepository.save(serie4);
-        crearMuestrasConDetalles(serie4, 12, 180.0);
+        crearMuestrasConDetalles(serie4, 18, 180.0);
 
         System.out.println("   ✓ Creadas 4 estaciones sismológicas");
         System.out.println("   ✓ Creados 5 sismógrafos");
         System.out.println("   ✓ Creadas 4 series temporales");
-        System.out.println("   ✓ Creadas múltiples muestras sísmicas con detalles completos");
+        System.out.println("   ✓ Creadas 75 muestras sísmicas con detalles completos (10+15+20+18)");
     }
 
     /**
@@ -476,7 +476,7 @@ public class DataSeeder implements CommandLineRunner {
         cambio2.setEventoSismico(evento2);
         cambioEstadoRepository.save(cambio2);
 
-        // Evento 3: Pendiente de Revisión
+        // Evento 3: Pendiente de Revisión (con serie temporal de La Rioja)
         EventoSismico evento3 = new EventoSismico();
         evento3.setFechaHoraOcurrencia(LocalDateTime.of(2024, 11, 5, 16, 45, 0));
         evento3.setCoordenadas("-29.4131,-66.8558");
@@ -490,6 +490,15 @@ public class DataSeeder implements CommandLineRunner {
             .filter(m -> m.getMagnitud() == 3.0)
             .findFirst().orElse(null));
         evento3 = eventoRepository.save(evento3);
+
+        // Asociar serie temporal al evento
+        SerieTemporal serie3 = serieTemporalRepository.findAll().stream()
+                .filter(s -> s.getSismografo().getEstacion().getNombre().contains("La Rioja"))
+                .findFirst().orElse(null);
+        if (serie3 != null) {
+            serie3.setEventoSismico(evento3);
+            serieTemporalRepository.save(serie3);
+        }
 
         CambioEstado cambio3 = new CambioEstado(
             com.los_btc_de_la_abuela.dsi.TPI.enums.EstadoEnum.PTE_DE_REVISION, 
@@ -533,7 +542,7 @@ public class DataSeeder implements CommandLineRunner {
         cambio4b.setEventoSismico(evento4);
         cambioEstadoRepository.save(cambio4b);
 
-        // Evento 5: Pendiente de Revisión (reciente)
+        // Evento 5: Pendiente de Revisión (reciente - con serie temporal de Catamarca)
         EventoSismico evento5 = new EventoSismico();
         evento5.setFechaHoraOcurrencia(LocalDateTime.now().minusHours(2));
         evento5.setCoordenadas("-33.0,-68.5");
@@ -548,6 +557,15 @@ public class DataSeeder implements CommandLineRunner {
             .findFirst().orElse(null));
         evento5 = eventoRepository.save(evento5);
 
+        // Asociar serie temporal al evento
+        SerieTemporal serie4 = serieTemporalRepository.findAll().stream()
+                .filter(s -> s.getSismografo().getEstacion().getNombre().contains("Catamarca"))
+                .findFirst().orElse(null);
+        if (serie4 != null) {
+            serie4.setEventoSismico(evento5);
+            serieTemporalRepository.save(serie4);
+        }
+
         CambioEstado cambio5 = new CambioEstado(
             com.los_btc_de_la_abuela.dsi.TPI.enums.EstadoEnum.PTE_DE_REVISION, 
             LocalDateTime.now().minusHours(2).plusMinutes(5),
@@ -561,6 +579,6 @@ public class DataSeeder implements CommandLineRunner {
         System.out.println("   ✓ 1 evento AUTO_DETECTADO");
         System.out.println("   ✓ 1 evento CONFIRMADO");
         System.out.println("   ✓ Todos con magnitudes Richter asociadas");
-        System.out.println("   ✓ Todos con estaciones sismológicas asociadas");
+        System.out.println("   ✓ 4 eventos con series temporales y sismogramas (eventos #1, #2, #3, #5)");
     }
 }
