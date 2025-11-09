@@ -1,6 +1,6 @@
 package com.los_btc_de_la_abuela.dsi.TPI.service;
 
-import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoDTO;
+import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoSinRevisionDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.model.CambioEstado;
 import com.los_btc_de_la_abuela.dsi.TPI.model.EventoSismico;
 import com.los_btc_de_la_abuela.dsi.TPI.repository.EventoSismicoRepository;
@@ -23,9 +23,9 @@ public class EventoSismicoService {
     @Autowired
     private EventoSismicoRepository eventoSismicoRepository;
   
-    public List<EventoSismicoDTO> buscarEventosSinRevision() {
+    public List<EventoSismicoSinRevisionDTO> buscarEventosSinRevision() {
         List<EventoSismico> eventos = eventoSismicoRepository.getAllEventos();
-        List<EventoSismicoDTO> eventosPendientes = new ArrayList<EventoSismicoDTO>();
+        List<EventoSismicoSinRevisionDTO> eventosPendientes = new ArrayList<EventoSismicoSinRevisionDTO>();
         for (EventoSismico evento : eventos) {
             CambioEstado cambioActual = null;
             for (CambioEstado cambio : evento.getCambiosEstado()) {
@@ -39,7 +39,7 @@ public class EventoSismicoService {
                 LocalDateTime fechaHoraOcurrencia = evento.getFechaHoraOcurrencia();
                 Float valorMagnitud = evento.getValorMagnitud();
                 String coordenadas = evento.getCoordenadas();
-                eventosPendientes.add(new EventoSismicoDTO(
+                eventosPendientes.add(new EventoSismicoSinRevisionDTO(
                     evento.getId(),
                     fechaHoraOcurrencia,
                     valorMagnitud,
@@ -58,5 +58,9 @@ public class EventoSismicoService {
 
     public void save(EventoSismico evento) {
       eventoSismicoRepository.save(evento);
+    }
+
+    public List<EventoSismico> findAll() {
+      return eventoSismicoRepository.findAll();
     }
 }

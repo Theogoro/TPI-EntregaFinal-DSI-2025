@@ -18,10 +18,12 @@ public class SesionService {
    * Obtiene una sesión activa mock.
    * MOCK: En producción, esto debería obtener la sesión del usuario autenticado
    * desde el contexto de seguridad (Spring Security).
+   * 
+   * @return Sesión con usuario PERSISTIDO en la base de datos
    */
   public Sesion getSesionActiva() {
-    // MOCK: Crear usuario y sesión de prueba
-    Usuario usuario = usuarioService.crearUsuarioMock();
+    // MOCK: Obtener o crear usuario persistido
+    Usuario usuario = usuarioService.obtenerUsuarioMock();
     
     Sesion sesion = new Sesion();
     sesion.setUsuario(usuario);

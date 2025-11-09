@@ -2,6 +2,7 @@ package com.los_btc_de_la_abuela.dsi.TPI.service;
 
 import com.los_btc_de_la_abuela.dsi.TPI.dto.DatosRegistradosDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoDTO;
+import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoSinRevisionDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.SismogramaDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.VelocidadLongitudDeFrecuencia;
 import com.los_btc_de_la_abuela.dsi.TPI.model.EventoSismico;
@@ -42,19 +43,19 @@ public class GestorRegRevisionManual {
     @Autowired
     private SesionService sesionService;
 
-    public List<EventoSismicoDTO> buscarEventosSinRevision() {
-        List<EventoSismicoDTO> eventos = eventoSismicoService.buscarEventosSinRevision();
+    public List<EventoSismicoSinRevisionDTO> buscarEventosSinRevision() {
+        List<EventoSismicoSinRevisionDTO> eventos = eventoSismicoService.buscarEventosSinRevision();
         if (!hayEventosSinRevision(eventos)) {
           return null; // No llega nunca porque ya lanza excepción en el service
         }
         return this.ordenarEventosPorFechaHoraOcurrencia(eventos);
     }
 
-    private boolean hayEventosSinRevision(List<EventoSismicoDTO> eventos) {
+    private boolean hayEventosSinRevision(List<EventoSismicoSinRevisionDTO> eventos) {
         return eventos != null && !eventos.isEmpty();
     }
 
-    private List<EventoSismicoDTO> ordenarEventosPorFechaHoraOcurrencia(List<EventoSismicoDTO> eventos) {
+    private List<EventoSismicoSinRevisionDTO> ordenarEventosPorFechaHoraOcurrencia(List<EventoSismicoSinRevisionDTO> eventos) {
         eventos.sort((e1, e2) -> e1.getFechaHoraOcurrencia().compareTo(e2.getFechaHoraOcurrencia()));
         return eventos;
     }
@@ -134,5 +135,12 @@ public class GestorRegRevisionManual {
       Usuario usuario = sesionService.getSesionActiva().getEmpleado();
       evento.rechazar(usuario);
       eventoSismicoService.save(evento);
+    }
+
+    public List<EventoSismicoDTO> obtenerTodosLosEventos() {
+      List<EventoSismico> eventos = eventoSismicoService.findAll();
+      return eventos.stream()
+          .map(EventoSismicoDTO::fromEntity)
+          .toList();
     }
 }

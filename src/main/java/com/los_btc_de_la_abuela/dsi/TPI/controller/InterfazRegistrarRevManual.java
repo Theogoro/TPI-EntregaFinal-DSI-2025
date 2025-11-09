@@ -2,9 +2,8 @@ package com.los_btc_de_la_abuela.dsi.TPI.controller;
 
 import com.los_btc_de_la_abuela.dsi.TPI.dto.DatosRegistradosDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoDTO;
+import com.los_btc_de_la_abuela.dsi.TPI.dto.EventoSismicoSinRevisionDTO;
 import com.los_btc_de_la_abuela.dsi.TPI.dto.SismogramaDTO;
-import com.los_btc_de_la_abuela.dsi.TPI.model.EventoSismico;
-import com.los_btc_de_la_abuela.dsi.TPI.model.RevisionManual;
 import com.los_btc_de_la_abuela.dsi.TPI.service.GestorRegRevisionManual;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +17,15 @@ import java.util.Map;
  * Representa el punto de entrada del caso de uso "Registrar Revisión Manual".
  */
 @RestController
-@RequestMapping("/api/revision-manual")
+@RequestMapping("/api/eventos")
 public class InterfazRegistrarRevManual {
 
     @Autowired
     private GestorRegRevisionManual gestorRevision;
 
     @GetMapping("/eventos-sin-revision")
-    public ResponseEntity<List<EventoSismicoDTO>> buscarEventosSinRevision() {
-        List<EventoSismicoDTO> eventos = gestorRevision.buscarEventosSinRevision();
+    public ResponseEntity<List<EventoSismicoSinRevisionDTO>> buscarEventosSinRevision() {
+        List<EventoSismicoSinRevisionDTO> eventos = gestorRevision.buscarEventosSinRevision();
         return ResponseEntity.ok(eventos);
     }
 
@@ -34,14 +33,13 @@ public class InterfazRegistrarRevManual {
     public ResponseEntity<Void> tomarEvento(@RequestBody Map<String, Long> request) {
         try {
             gestorRevision.tomarEvento(request.get("eventoId"));
-            // DatosRegistradosDTO datos = this.buscarDatosRegistrados(request.get("eventoId"));
             return ResponseEntity.status(201).build();
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping("/evento/{eventoId}/datos-registrados")
+    @GetMapping("/{eventoId}/datos-registrados")
     public ResponseEntity<DatosRegistradosDTO> obtenerDatosRegistrados(@PathVariable Long eventoId) {
         try {
             DatosRegistradosDTO datos = gestorRevision.obtenerDatosRegistrados(eventoId);
@@ -51,7 +49,7 @@ public class InterfazRegistrarRevManual {
         }
     }
 
-    @GetMapping("/evento/{eventoId}/sismogramas")
+    @GetMapping("/{eventoId}/sismogramas")
     public ResponseEntity<List<SismogramaDTO>> obtenerDatosPorEstacion(@PathVariable Long eventoId) {
         try {
             List<SismogramaDTO> datos = gestorRevision.obtenerDatosRegistradosParaSismogramas(eventoId);
@@ -61,7 +59,7 @@ public class InterfazRegistrarRevManual {
         }
     }
 
-    @PostMapping("/evento/{eventoId}/rechazar")
+    @PostMapping("/{eventoId}/rechazar")
     public ResponseEntity<Void> rechazarEvento(@PathVariable Long eventoId) {
         try {
             gestorRevision.tomarRechazoEvento(eventoId);
@@ -69,5 +67,10 @@ public class InterfazRegistrarRevManual {
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<EventoSismicoDTO>> saludos() {
+        return ResponseEntity.ok(gestorRevision.obtenerTodosLosEventos());
     }
 }

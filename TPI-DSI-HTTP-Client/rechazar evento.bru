@@ -1,11 +1,11 @@
 meta {
   name: rechazar evento
   type: http
-  seq: 7
+  seq: 8
 }
 
 post {
-  url: {{baseUrl}}/api/revision-manua/evento/:eventoId/rechazar
+  url: {{baseUrl}}/api/eventos/:eventoId/rechazar
   body: none
   auth: inherit
 }

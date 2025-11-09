@@ -1,11 +1,11 @@
 meta {
   name: get sismogramas
   type: http
-  seq: 6
+  seq: 7
 }
 
 get {
-  url: {{baseUrl}}/api/revision-manual/evento/:eventoId/sismogramas
+  url: {{baseUrl}}/api/eventos/:eventoId/sismogramas
   body: none
   auth: inherit
 }
